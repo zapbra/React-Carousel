@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./Carousel.css";
 import CarouselButton from "./CarouselButton";
 import CarouselImages from "./CarouselImages";
@@ -26,20 +26,20 @@ interface ImageDataType {
 
 type WindowSize = [number, number];
 
-const useWindowSize = (): WindowSize => {
-    const [size, setSize] = useState<WindowSize>([0, 0]);
+// const useWindowSize = (): WindowSize => {
+//     const [size, setSize] = useState<WindowSize>([0, 0]);
 
-    useLayoutEffect(() => {
-        function updateSize() {
-            setSize([window.innerWidth, window.innerHeight]);
-        }
-        window.addEventListener("resize", updateSize);
-        updateSize();
-        return () => window.removeEventListener("resize", updateSize);
-    }, []);
+//     useLayoutEffect(() => {
+//         function updateSize() {
+//             setSize([window.innerWidth, window.innerHeight]);
+//         }
+//         window.addEventListener("resize", updateSize);
+//         updateSize();
+//         return () => window.removeEventListener("resize", updateSize);
+//     }, []);
 
-    return size;
-};
+//     return size;
+// };
 
 const Carousel: React.FC<CarouselProps> = ({
     images,
@@ -52,70 +52,43 @@ const Carousel: React.FC<CarouselProps> = ({
     const largeImageHeight = imageHeight * imageRatio,
         largeImageWidth = imageWidth * imageRatio;
 
-    //const [windowWidth, windowHeight] = useWindowSize();
-    const [leftOffset, setLeftOffset] = useState(0);
-    
-    /**
-     * Converts list of images into image data objects
-     * @returns List of image data objects
-     */
-    const getImagesData = (): ImageDataType[] => {
-        // get current 10 images to show on the screen
-        const imagesSlice = images.slice(
-            Math.max(0, currentIndex - INDEX_OFFSET),
-            Math.max(currentIndex - INDEX_OFFSET + IMAGE_RENDER_COUNT, INDEX_OFFSET)
-        );
-        // construct the data, so the components can update on data change
-        const imageDataArray = imagesSlice.map((image, index) => {
-            return { image: image, selected: false, index: index };
-        });
-        // set the middle image to selected
-        const middleImage =
-            imageDataArray[Math.floor(imageDataArray.length / 2)];
-        middleImage.selected = true;
-        return imageDataArray;
-    };
+    const imagesData = images.map((image, index) => {
+        return {
+            image: image,
+            selected: false,
+            index: index,
+        };
+    });
 
-    const getSelectedImages = (selectedIndex: number): ImageDataType[] => {
-        return imageData.map((image) => {
-            if (image.index === selectedIndex) {
-                image.selected = true;
-            } else {
-                image.selected = false;
-            }
-            return image;
-        });
-    };
+    const [selectedIndex, setSelectedIndex] = useState(2);
+    console.log("len");
+    console.log(images.length);
+    imagesData[selectedIndex].selected = true;
+    // data storage objects of images
+    const [imageData, setImageData] = useState<ImageDataType[]>(imagesData);
+    // CarouselImages to render
+    const [renderedImages, setRenderedImages] = useState<React.ReactNode[]>([]);
 
-    const updateOffset = (selectedIndex: number) => {
-        const offsetPixels =
-            (selectedIndex - currentIndex) * IMAGE_WIDTH;
-            console.log('offset pixels')
-            console.log(offsetPixels)
-        setLeftOffset((prevOffset) => {
-            return prevOffset - offsetPixels;
-        });
-    };
-
-    function selectImage (selectedIndex: number)  {
-        const updatedImages = getSelectedImages(selectedIndex);
-        setImageData(updatedImages);
-        setRenderedImages(getRenderedImages(updatedImages));
-        console.log("selected index")
-        console.log(selectedIndex)
+    const [leftOffset, setLeftOffset] = useState(4 * IMAGE_WIDTH);
+    const selectImage = (selectedIndex: number) => {
         updateOffset(selectedIndex);
-        setCurrentIndex(selectedIndex);
     };
 
-    /**
-     * Converts a list of image data objects into CarouselImages
-     * @param imagesData - The image data to turn into rendered images
-     * @returns An array of CarouselImages
-     */
-    function getRenderedImages (
-        imageDataParam: ImageDataType[]
-    ): React.ReactNode[]  {
-        const renderedImagesMap = imageDataParam.map((image) => {
+    const leftImagesCount = Math.floor(images.length / 2);
+    const leftAllignmentOffset =
+        leftImagesCount * IMAGE_WIDTH + leftImagesCount * SPACING;
+
+    const updateOffset = (index: number) => {
+        const rightShiftOffset = index * IMAGE_WIDTH + index * SPACING;
+        setLeftOffset(leftAllignmentOffset - rightShiftOffset);
+    };
+
+    useEffect(() => {
+        updateOffset(selectedIndex);
+    }, []);
+
+    useEffect(() => {
+        const renderImages = imageData.map((image) => {
             return (
                 <CarouselImage
                     image={image.image}
@@ -128,29 +101,19 @@ const Carousel: React.FC<CarouselProps> = ({
                 />
             );
         });
+        setRenderedImages(renderImages);
+    }, [imageData]);
 
-        return renderedImagesMap;
+    const navigateCarousel = (direction: "right" | "left") => {
+        let shiftAmount;
+        if (direction === "right") {
+            shiftAmount = 1;
+        } else {
+            shiftAmount = -1;
+        }
+        updateOffset(selectedIndex + shiftAmount);
+        setSelectedIndex((prevIndex) => prevIndex + shiftAmount);
     };
-    const [currentIndex, setCurrentIndex] = useState(INDEX_OFFSET);
-
-    console.log("current index")
-    console.log(currentIndex)
-
-
-    const [imageIndex, setImageIndex] = useState(
-        images.length >= 5 ? 2 : images.length - 1
-    );
-    const [imageOffsetIndex, setImageOffsetIndex] = useState(0);
-    const imageDataResult = getImagesData();
-    // data storage objects of images
-    const [imageData, setImageData] =
-        useState<ImageDataType[]>(imageDataResult);
-    // CarouselImages to render
-    const [renderedImages, setRenderedImages] = useState<React.ReactNode[]>(
-        getRenderedImages(imageDataResult)
-    );
-
-    const navigateCarousel = () => {};
 
     return (
         <div className="carousel">

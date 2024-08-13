@@ -6,7 +6,7 @@ export interface CarouselButtonProps {
     direction: "right" | "left";
     color: string;
     width: number;
-    navigateCarousel: () => void;
+    navigateCarousel: (direction: "right" | "left") => void;
 }
 
 const CarouselButton: React.FC<CarouselButtonProps> = ({
@@ -16,7 +16,10 @@ const CarouselButton: React.FC<CarouselButtonProps> = ({
     navigateCarousel,
 }) => {
     return (
-        <div className="carousel-button" onClick={navigateCarousel}>
+        <div
+            className="carousel-button"
+            onClick={() => navigateCarousel(direction)}
+        >
             {direction === "right" ? (
                 <ChevronRight color={color} width={width} />
             ) : (

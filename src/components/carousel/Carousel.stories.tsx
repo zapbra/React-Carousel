@@ -23,6 +23,5 @@ CarouselTest.args = {
         castlevania,
         castlevania,
         castlevania,
-        castlevania,
     ],
 };
