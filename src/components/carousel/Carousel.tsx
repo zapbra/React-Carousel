@@ -3,6 +3,8 @@ import "./Carousel.css";
 import CarouselButton from "./CarouselButton";
 import CarouselImages from "./CarouselImages";
 import { CarouselImage } from "./ComponentList";
+import ProgressBar from "./ProgressBar";
+import CarouselPreview from "./CarouselPreview";
 
 const imageRatio = 1.25,
     IMAGE_RENDER_COUNT = 9,
@@ -25,6 +27,11 @@ interface ImageDataType {
 }
 
 type WindowSize = [number, number];
+
+export interface CurrentIndexType {
+    index: number;
+    displayed: boolean;
+}
 
 // const useWindowSize = (): WindowSize => {
 //     const [size, setSize] = useState<WindowSize>([0, 0]);
@@ -49,89 +56,79 @@ const Carousel: React.FC<CarouselProps> = ({
     imageWidth = IMAGE_WIDTH,
 }) => {
     const imageHeight = imageWidth * imageRatio;
-    const largeImageHeight = imageHeight * imageRatio,
-        largeImageWidth = imageWidth * imageRatio;
 
-    const imagesData = images.map((image, index) => {
-        return {
-            image: image,
-            selected: false,
-            index: index,
-        };
+    const [currentIndex, setCurrentIndex] = useState<CurrentIndexType>({
+        index: INDEX_OFFSET,
+        displayed: false,
     });
 
-    const [selectedIndex, setSelectedIndex] = useState(2);
-    console.log("len");
-    console.log(images.length);
-    imagesData[selectedIndex].selected = true;
-    // data storage objects of images
-    const [imageData, setImageData] = useState<ImageDataType[]>(imagesData);
-    // CarouselImages to render
-    const [renderedImages, setRenderedImages] = useState<React.ReactNode[]>([]);
-
-    const [leftOffset, setLeftOffset] = useState(4 * IMAGE_WIDTH);
-    const selectImage = (selectedIndex: number) => {
-        updateOffset(selectedIndex);
-    };
-
-    const leftImagesCount = Math.floor(images.length / 2);
-    const leftAllignmentOffset =
-        leftImagesCount * IMAGE_WIDTH + leftImagesCount * SPACING;
-
-    const updateOffset = (index: number) => {
-        const rightShiftOffset = index * IMAGE_WIDTH + index * SPACING;
-        setLeftOffset(leftAllignmentOffset - rightShiftOffset);
-    };
-
-    useEffect(() => {
-        updateOffset(selectedIndex);
-    }, []);
-
-    useEffect(() => {
-        const renderImages = imageData.map((image) => {
-            return (
-                <CarouselImage
-                    image={image.image}
-                    selected={image.selected}
-                    width={imageWidth}
-                    height={imageHeight}
-                    imageRatio={imageRatio}
-                    index={image.index}
-                    selectImage={selectImage}
-                />
-            );
-        });
-        setRenderedImages(renderImages);
-    }, [imageData]);
-
-    const navigateCarousel = (direction: "right" | "left") => {
-        let shiftAmount;
-        if (direction === "right") {
-            shiftAmount = 1;
-        } else {
-            shiftAmount = -1;
-        }
-        updateOffset(selectedIndex + shiftAmount);
-        setSelectedIndex((prevIndex) => prevIndex + shiftAmount);
-    };
-
     return (
-        <div className="carousel">
-            <CarouselButton
-                color={color}
-                width={iconSize}
-                direction="left"
-                navigateCarousel={navigateCarousel}
-            />
-            <CarouselImages
-                renderedImages={renderedImages}
-                leftOffset={leftOffset}
-            />
-            <CarouselButton
-                color={color}
-                width={iconSize}
-                direction="right"
-                navigateCarousel={navigateCarousel}
+        <div
+            className="carousel"
+            style={{ height: imageHeight * imageRatio + 32 + 64 + 16 + "px" }}
+        >
+            {currentIndex.displayed && (
+                <CarouselPreview
+                    selectImage={setCurrentIndex}
+                    image={images[currentIndex.index]}
+                />
+            )}
+            <div
+                className="carousel-flex"
+                style={{ height: imageHeight * imageRatio + 32 + "px" }}
+            >
+                <CarouselButton
+                    color={color}
+                    width={iconSize}
+                    direction="left"
+                    navigateCarousel={() => {
+                        setCurrentIndex((prevIndex) => {
+                            return {
+                                index:
+                                    (prevIndex.index - 1 + images.length) %
+                                    images.length,
+                                displayed: false,
+                            };
+                        });
+                    }}
+                />
+                <CarouselImages
+                    renderedImages={images.map((image, index) => {
+                        return (
+                            <CarouselImage
+                                key={index}
+                                image={image}
+                                currentIndex={currentIndex}
+                                index={index}
+                                width={imageWidth}
+                                height={imageHeight}
+                                imageRatio={imageRatio}
+                                selectImage={setCurrentIndex}
+                            />
+                        );
+                    })}
+                    leftOffset={
+                        220 -
+                        (currentIndex.index - INDEX_OFFSET) *
+                            (imageWidth + SPACING)
+                    }
+                />
+                <CarouselButton
+                    color={color}
+                    width={iconSize}
+                    direction="right"
+                    navigateCarousel={() => {
+                        setCurrentIndex({
+                            index: (currentIndex.index + 1) % images.length,
+                            displayed: false,
+                        });
+                    }}
+                />
+            </div>
+
+            <ProgressBar
+                currentIndex={currentIndex.index}
+                maxIndex={images.length}
             />
         </div>
     );

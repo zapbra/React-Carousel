@@ -5,56 +5,57 @@ import React, {
     useImperativeHandle,
     useEffect,
 } from "react";
+import { CurrentIndexType } from "./Carousel.types";
+import CarouselPreview from "./CarouselPreview";
 
 export interface CarouselImageProps {
     image: string;
     width: number;
     height: number;
     imageRatio: number;
-    selected: boolean;
+    currentIndex: CurrentIndexType;
     index: number;
-    selectImage: (selectedIndex: number) => void;
+    selectImage: (
+        updateIndex: (prevIndex: CurrentIndexType) => CurrentIndexType
+    ) => void;
 }
-
 
 interface Dimensions {
     width: number;
     height: number;
 }
 
-const CarouselImage: React.FC<CarouselImageProps> = (
-    ({ image, height, width, selected, imageRatio, index, selectImage }) => {
-        const getDimensions = (dimensions: Dimensions): Dimensions => {
-            if (selected) {
-                return {
-                    width: dimensions.width * imageRatio,
-                    height: dimensions.height * imageRatio,
-                };
-            } else {
-                return { height, width };
-            }
-        };
-
-        const baseHeight = height;
-        const baseWidth = width;
-        const [selectedState, setSelectedState] = useState(selected);
-        const [dimensionsState, setDimensionsState] = useState<Dimensions>(
-            getDimensions({ height, width })
-        );
-
-        useEffect(() => {
-            setDimensionsState(getDimensions);
-        }, [selected]);
-        return (
+const CarouselImage: React.FC<CarouselImageProps> = ({
+    image,
+    height,
+    width,
+    currentIndex,
+    index,
+    imageRatio,
+    selectImage,
+}) => {
+    return (
+        <>
             <img
-                onClick={() => selectImage(index)}
+                onClick={() =>
+                    selectImage((prevIndex: CurrentIndexType) => {
+                        return {
+                            index: index,
+                            displayed: prevIndex.index === index,
+                        };
+                    })
+                }
                 className="carousel-image"
                 src={image}
-                width={dimensionsState.width}
-                height={dimensionsState.height}
+                width={
+                    currentIndex.index === index ? width * imageRatio : width
+                }
+                height={
+                    currentIndex.index === index ? height * imageRatio : height
+                }
             />
-        );
-    }
-);
+        </>
+    );
+};
 
 export default CarouselImage;

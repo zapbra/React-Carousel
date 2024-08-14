@@ -1,13 +1,16 @@
 .carousel {
     background-color: #6d6aff10;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
     padding: 48px 0 16px;
-    align-items: center;
 }
 
-.carousel-wrapper {
+.carousel-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.carousel-image-wrapper {
     overflow: hidden;
 }
 .carousel-images {
@@ -22,10 +25,16 @@
 }
 
 .carousel-image {
+    object-fit: cover;
     transition: 1s ease;
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     cursor: pointer;
+}
+
+.carousel-image:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
 }
 
 .carousel-button {
@@ -44,4 +53,82 @@
 
 .carousel-button:hover {
     background-color: #6d6aff30;
+}
+
+.carousel-button:active {
+    background-color: #6d6aff50;
+    box-shadow:
+        rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.progress-bar-holder {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.progress-bar {
+    background: linear-gradient(0deg, #6d6aff 0%, #6d6aff20 100%);
+    border-radius: 2px;
+    width: 24px;
+    transition: height 1s;
+}
+
+.carousel-preview {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    background-color: #01003380;
+    animation: carousel-preview-animation-in 0.25s;
+    transition: opacity 0.25s;
+}
+
+.carousel-preview-image {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 80%;
+    top: 10%;
+}
+
+.close-top-right {
+    position: absolute;
+    top: 32px;
+    right: 48px;
+    cursor: pointer;
+    padding: 16px;
+    background-color: #6d6aff;
+    border-radius: 4px;
+    transition: 0.25s;
+}
+
+.close-top-right:hover {
+    background-color: #4f4cff;
+}
+
+@keyframes carousel-preview-animation-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.carousel-preview-animation-out-class {
+    animation:;
+}
+
+@keyframes carousel-preview-animation-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

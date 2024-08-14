@@ -11,7 +11,7 @@ const CarouselImages: React.FC<CarouselImagesProps> = ({
     leftOffset,
 }) => {
     return (
-        <div className="carousel-wrapper">
+        <div className="carousel-image-wrapper">
             <div
                 className="carousel-images"
                 style={{ left: leftOffset + "px" }}
