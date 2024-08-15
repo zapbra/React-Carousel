@@ -24,4 +24,5 @@ CarouselTest.args = {
         castlevania,
         castlevania,
     ],
+    color: "#40E0D0",
 };

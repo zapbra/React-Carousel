@@ -1,5 +1,15 @@
+:root {
+    --main-color-base: #6d6aff;
+    --main-color-dark: #4f4cff;
+    --main-color-dark-secondary: #01003380;
+    --main-bg-color: #6d6aff10;
+    --main-color-light: #6d6aff20;
+    --main-color-light-accent: #6d6aff30;
+    --main-color-light-accent-secondary: #6d6aff50;
+}
+
 .carousel {
-    background-color: #6d6aff10;
+    background-color: var(--main-bg-color);
     width: 100%;
     padding: 48px 0 16px;
 }
@@ -38,7 +48,7 @@
 }
 
 .carousel-button {
-    background-color: #6d6aff20;
+    background-color: var(--main-color-light);
     border-radius: 4px;
     width: 64px;
     height: 160px;
@@ -52,11 +62,11 @@
 }
 
 .carousel-button:hover {
-    background-color: #6d6aff30;
+    background-color: var(--main-color-light-accent);
 }
 
 .carousel-button:active {
-    background-color: #6d6aff50;
+    background-color: var(--main-color-light-accent-secondary);
     box-shadow:
         rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
         rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
@@ -69,7 +79,11 @@
 }
 
 .progress-bar {
-    background: linear-gradient(0deg, #6d6aff 0%, #6d6aff20 100%);
+    background: linear-gradient(
+        0deg,
+        var(--main-color-base) 0%,
+        var(--main-color-light) 100%
+    );
     border-radius: 2px;
     width: 24px;
     transition: height 1s;
@@ -83,7 +97,7 @@
     top: 0;
     height: 100%;
     display: flex;
-    background-color: #01003380;
+    background-color: var(--main-color-dark-secondary);
     animation: carousel-preview-animation-in 0.25s;
     transition: opacity 0.25s;
 }
@@ -102,13 +116,13 @@
     right: 48px;
     cursor: pointer;
     padding: 16px;
-    background-color: #6d6aff;
+    background-color: var(--main-color-base);
     border-radius: 4px;
     transition: 0.25s;
 }
 
 .close-top-right:hover {
-    background-color: #4f4cff;
+    background-color: var(--main-color-dark);
 }
 
 @keyframes carousel-preview-animation-in {
@@ -118,10 +132,6 @@
     to {
         opacity: 1;
     }
-}
-
-.carousel-preview-animation-out-class {
-    animation:;
 }
 
 @keyframes carousel-preview-animation-out {

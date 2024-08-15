@@ -5,12 +5,13 @@ import CarouselImages from "./CarouselImages";
 import { CarouselImage } from "./ComponentList";
 import ProgressBar from "./ProgressBar";
 import CarouselPreview from "./CarouselPreview";
+import { convertToRGBA, setCSSColors } from "../../utils/functions";
 
 const imageRatio = 1.25,
     IMAGE_RENDER_COUNT = 9,
     SPACING = 16,
     IMAGE_WIDTH = 260,
-    INDEX_OFFSET = Math.floor(IMAGE_RENDER_COUNT / 2);
+    DEFAULT_COLOR = "#6D6AFF";
 
 export interface CarouselProps {
     images: string[];
@@ -50,22 +51,34 @@ export interface CurrentIndexType {
 
 const Carousel: React.FC<CarouselProps> = ({
     images,
-    color = "6D6AFF",
+    color = DEFAULT_COLOR,
     height = null,
     iconSize = 48,
     imageWidth = IMAGE_WIDTH,
 }) => {
     const imageHeight = imageWidth * imageRatio;
+    const shade20 = convertToRGBA(color, 0.2);
+    const shade10 = convertToRGBA(color, 0.1);
 
     const [currentIndex, setCurrentIndex] = useState<CurrentIndexType>({
-        index: INDEX_OFFSET,
+        index: 0,
         displayed: false,
     });
+
+    useEffect(() => {
+        // update the ui colors based on color prop, but only when the user provided one
+        if (color !== DEFAULT_COLOR) {
+            setCSSColors(color);
+        }
+    }, []);
 
     return (
         <div
             className="carousel"
-            style={{ height: imageHeight * imageRatio + 32 + 64 + 16 + "px" }}
+            style={{
+                height: imageHeight * imageRatio + 32 + 64 + 16 + "px",
+                backgroundColor: shade10,
+            }}
         >
             {currentIndex.displayed && (
                 <CarouselPreview
@@ -79,6 +92,8 @@ const Carousel: React.FC<CarouselProps> = ({
             >
                 <CarouselButton
                     color={color}
+                    color2={shade10}
+                    color3={shade20}
                     width={iconSize}
                     direction="left"
                     navigateCarousel={() => {
@@ -108,13 +123,14 @@ const Carousel: React.FC<CarouselProps> = ({
                         );
                     })}
                     leftOffset={
-                        220 -
-                        (currentIndex.index - INDEX_OFFSET) *
-                            (imageWidth + SPACING)
+                        -(currentIndex.index - Math.floor(images.length / 2)) *
+                        (imageWidth + SPACING)
                     }
                 />
                 <CarouselButton
                     color={color}
+                    color2={shade10}
+                    color3={shade20}
                     width={iconSize}
                     direction="right"
                     navigateCarousel={() => {
