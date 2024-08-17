@@ -164,4 +164,12 @@
         top: 16px;
         right: 24px;
     }
+
+    .progress-bar-holder {
+        gap: 8px;
+    }
+
+    .progress-bar {
+        width: 16px;
+    }
 }

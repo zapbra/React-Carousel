@@ -64,17 +64,33 @@ const Carousel: React.FC<CarouselProps> = ({
     imageHeight = IMAGE_HEIGHT,
     aspectRatio = "portrait",
 }) => {
-    let imageWidth = imageHeight / imageRatio;
+    const [imageHeightState, setImageHeightState] = useState(imageHeight);
+    const [imageWidth, setImageWidth] = useState(imageHeightState / imageRatio);
+    const fullLength =
+        images.length * imageWidth + (images.length - 1) * SPACING;
     const shade20 = convertToRGBA(color, 0.2);
     const shade10 = convertToRGBA(color, 0.1);
     const carouselRef = useRef<HTMLDivElement>(null);
+    const [childWidth, setChildWidth] = useState(0);
     const width = useDivSize(carouselRef);
-    const minWidth = imageHeight;
 
     const [currentIndex, setCurrentIndex] = useState<CurrentIndexType>({
         index: 0,
         displayed: false,
     });
+
+    useEffect(() => {
+        if (width < imageHeight + SMALL_BUTTON_WIDTH * 2 && width != 0) {
+            setImageHeightState(width - SMALL_BUTTON_WIDTH * 2);
+            setImageWidth(imageHeightState / imageRatio);
+        }
+
+        const childElement =
+            carouselRef?.current?.querySelector(".carousel-images");
+        if (childElement) {
+            setChildWidth((childElement as HTMLElement).offsetWidth);
+        }
+    }, [width, imageHeightState, imageWidth, childWidth]);
 
     useEffect(() => {
         // update the ui colors based on color prop, but only when the user provided one
@@ -83,18 +99,12 @@ const Carousel: React.FC<CarouselProps> = ({
         }
     }, []);
 
-    console.log("width");
-    console.log(width);
-    if (width < imageHeight + SMALL_BUTTON_WIDTH * 2) {
-        imageHeight = width - (SMALL_BUTTON_WIDTH * 2) / 1;
-        imageWidth = imageHeight / imageRatio;
-    }
     return (
         <div
             className="carousel"
             ref={carouselRef}
             style={{
-                height: imageHeight * imageRatio + 32 + 64 + 16 + "px",
+                height: imageHeightState * imageRatio + 32 + 64 + 16 + "px",
                 backgroundColor: shade10,
             }}
         >
@@ -106,7 +116,7 @@ const Carousel: React.FC<CarouselProps> = ({
             )}
             <div
                 className="carousel-flex"
-                style={{ height: imageHeight * imageRatio + 32 + "px" }}
+                style={{ height: imageHeightState * imageRatio + 32 + "px" }}
             >
                 <CarouselButton
                     color={color}
@@ -133,15 +143,23 @@ const Carousel: React.FC<CarouselProps> = ({
                                 currentIndex={currentIndex}
                                 index={index}
                                 width={imageWidth}
-                                height={imageHeight}
+                                height={imageHeightState}
                                 imageRatio={imageRatio}
                                 selectImage={setCurrentIndex}
                             />
                         );
                     })}
+                    childWidth={childWidth}
+                    transformPercent={
+                        (fullLength / 2 / childWidth -
+                            ((imageWidth + SPACING) / childWidth) *
+                                currentIndex.index) *
+                        100
+                    }
                     leftOffset={
-                        -(currentIndex.index - Math.floor(images.length / 2)) *
-                        (imageWidth + SPACING)
+                        -(currentIndex.index - images.length / 2) *
+                            (imageWidth + SPACING) -
+                        (imageHeightState - imageWidth + SPACING / 4) * 2
                     }
                 />
                 <CarouselButton
@@ -161,6 +179,7 @@ const Carousel: React.FC<CarouselProps> = ({
             <ProgressBar
                 currentIndex={currentIndex.index}
                 maxIndex={images.length}
+                width={width}
             />
         </div>
     );
