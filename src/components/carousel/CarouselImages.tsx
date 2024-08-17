@@ -6,6 +6,7 @@ export interface CarouselImagesProps {
     leftOffset: number;
     childWidth: number;
     transformPercent: number;
+    elementHeight: string;
 }
 
 const CarouselImages: React.FC<CarouselImagesProps> = ({
@@ -13,13 +14,20 @@ const CarouselImages: React.FC<CarouselImagesProps> = ({
     leftOffset,
     childWidth,
     transformPercent,
+    elementHeight,
 }) => {
+    console.log("trans percent");
+    console.log(transformPercent);
     return (
         <div className="carousel-image-wrapper">
             <div
                 className="carousel-images"
                 //style={{ left: leftOffset + "px" }}
-                style={{ transform: `translate(${transformPercent}%)` }}
+                style={{
+                    transform: `translateX(${transformPercent}%)`,
+                    WebkitTransform: `translateX(${transformPercent}%)`,
+                    height: elementHeight,
+                }}
             >
                 {renderedImages}
             </div>
