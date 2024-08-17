@@ -47,9 +47,6 @@ export const reColor = (color: string, colorOffset: number): string => {
 
     // turn numbers into variables
     let [r, g, b, o] = matches.map((match) => parseFloat(match[0]));
-    console.log("oooo");
-    console.log(matches);
-    console.log(o);
     // change values based on provided color offset
     // Increases or decreases if provided value is positive/negative and ensures
     // value doesn't go out of rgb bounds
@@ -71,9 +68,6 @@ export const setCSSColors = (color: string): void => {
     let mainDarkSecondary = convertToRGBA("rgba(128,128,128,0.8)", 1);
     mainDarkSecondary = reColor(mainDarkSecondary, COLOR_OFFSET_DARK);
 
-    console.log("dark");
-    console.log(mainDarkSecondary);
-    console.log(mainDarkSecondary);
     document.documentElement.style.setProperty("--main-color-base", color);
     document.documentElement.style.setProperty("--main-bg-color", mainBg);
     document.documentElement.style.setProperty("--main-color-light", mainLight);
@@ -82,7 +76,7 @@ export const setCSSColors = (color: string): void => {
         mainLightAccent
     );
     document.documentElement.style.setProperty(
-        "--main-light-accent-secondary",
+        "--main-color-light-accent-secondary",
         mainLightAccentSecondary
     );
     document.documentElement.style.setProperty("--main-color-dark", mainDark);

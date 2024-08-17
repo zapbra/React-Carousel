@@ -40,12 +40,9 @@ const CarouselPreview: React.FC<CarouselPreviewProps> = ({
                     <path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z" />
                 </svg>
             </div>
-            <img
-                src={image}
-                alt=""
-                className="carousel-preview-image"
-                style={{ objectFit: "cover" }}
-            />
+            <div className="carousel-preview-image">
+                <img src={image} alt="" style={{ objectFit: "cover" }} />
+            </div>
         </div>
     );
 };

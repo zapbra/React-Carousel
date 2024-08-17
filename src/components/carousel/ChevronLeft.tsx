@@ -1,7 +1,7 @@
 import React from "react";
 import { IconProps } from "./Carousel.types";
 
-const ChevronLeft: React.FC<IconProps> = ({ color, width }) => {
+const ChevronLeft: React.FC<IconProps> = ({ color }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

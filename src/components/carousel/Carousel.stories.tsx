@@ -24,5 +24,7 @@ CarouselTest.args = {
         castlevania,
         castlevania,
     ],
-    color: "#40E0D0",
+    color: "orange",
+    imageHeight: 300,
+    aspectRatio: "portrait",
 };

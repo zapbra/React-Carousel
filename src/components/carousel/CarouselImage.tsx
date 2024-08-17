@@ -34,6 +34,7 @@ const CarouselImage: React.FC<CarouselImageProps> = ({
     imageRatio,
     selectImage,
 }) => {
+    console.log("re render");
     return (
         <>
             <img
