@@ -154,7 +154,8 @@ const Carousel: React.FC<CarouselProps> = ({
                     transformPercent={Math.round(
                         (fullLength / 2 / childWidth -
                             ((imageWidth + SPACING) / childWidth) *
-                                currentIndex.index) *
+                                currentIndex.index -
+                            imageWidth / 2 / childWidth) *
                             100
                     )}
                     leftOffset={
