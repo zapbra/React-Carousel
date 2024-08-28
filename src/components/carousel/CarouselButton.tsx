@@ -5,16 +5,16 @@ import ChevronLeft from "./ChevronLeft";
 export interface CarouselButtonProps {
     direction: "right" | "left";
     color: string;
-    color2: string;
-    color3: string;
-    navigateCarousel: (direction: "right" | "left") => void;
+    navigateCarousel: (rightDirection: string) => void;
+}
+
+export interface IconProps {
+    color: string;
 }
 
 const CarouselButton: React.FC<CarouselButtonProps> = ({
     direction,
     color,
-    color2,
-    color3,
     navigateCarousel,
 }) => {
     return (

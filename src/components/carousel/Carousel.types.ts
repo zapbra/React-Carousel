@@ -3,7 +3,4 @@ export type { CarouselImageProps } from "./CarouselImage";
 export type { CarouselButtonProps } from "./CarouselButton";
 export type { CarouselProps } from "./Carousel";
 export type { CurrentIndexType } from "./Carousel";
-export interface IconProps {
-    color: string;
-    width: number;
-}
+export type { IconProps } from "./CarouselButton";

@@ -1,173 +1,180 @@
 :root {
-  --main-color-base: #6d6aff;
-  --main-color-dark: #4f4cff;
-  --main-color-dark-secondary: #01003380;
-  --main-bg-color: #6d6aff10;
-  --main-color-light: #6d6aff20;
-  --main-color-light-accent: #6d6aff30;
-  --main-color-light-accent-secondary: #6d6aff50;
+    --main-color-base: #6d6aff;
+    --main-color-dark: #4f4cff;
+    --main-color-dark-secondary: #01003380;
+    --main-bg-color: #6d6aff10;
+    --main-color-light: #6d6aff20;
+    --main-color-light-accent: #6d6aff30;
+    --main-color-light-accent-secondary: #6d6aff50;
 }
 
 .carousel {
-  background-color: var(--main-bg-color);
-  width: 100%;
-  padding: 48px 0 16px;
-  position: relative;
+    background-color: var(--main-bg-color);
+    width: 100%;
+    padding: 48px 0 16px;
+    position: relative;
 }
 
 .carousel-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .carousel-image-wrapper {
-  overflow: hidden;
+    position: relative;
+    left: 0;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+.carousel-image-wrapper::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
 }
 
 .carousel-images {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  left: 0;
-  transition: transform 1s ease;
-  gap: 16px;
-  padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    transition: transform 1s ease;
+    gap: 16px;
+    padding: 16px 32px;
+    width: 100%;
 }
 
 .carousel-image {
-  object-fit: cover;
-  transition: 1s ease;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  cursor: pointer;
+    object-fit: cover;
+    transition: 1s ease;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
 }
 
 .carousel-image:hover {
-  transform: scale(1.1);
-  opacity: 0.9;
+    transform: scale(1.1);
+    opacity: 0.9;
 }
 
 .carousel-button {
-  background-color: var(--main-color-light);
-  border-radius: 4px;
-  width: 64px;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  flex-shrink: 0;
+    background-color: var(--main-color-light);
+    border-radius: 4px;
+    width: 64px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    flex-shrink: 0;
 }
 
 .carousel-button:hover {
-  background-color: var(--main-color-light-accent);
+    background-color: var(--main-color-light-accent);
 }
 
 .carousel-button:active {
-  background-color: var(--main-color-light-accent-secondary);
-  box-shadow:
-    rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
-    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    background-color: var(--main-color-light-accent-secondary);
+    box-shadow:
+        rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 .progress-bar-holder {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
 }
 
 .progress-bar {
-  background: linear-gradient(
-    0deg,
-    var(--main-color-base) 0%,
-    var(--main-color-light) 100%
-  );
-  border-radius: 2px;
-  width: 24px;
-  transition: height 1s;
+    background: linear-gradient(
+        0deg,
+        var(--main-color-base) 0%,
+        var(--main-color-light) 100%
+    );
+    border-radius: 2px;
+    width: 24px;
+    transition: height 1s;
 }
 
 .carousel-preview {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  left: 0;
-  top: 0;
-  height: 100%;
-  display: flex;
-  background-color: var(--main-color-dark-secondary);
-  animation: carousel-preview-animation-in 0.25s;
-  transition: opacity 0.25s;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    background-color: var(--main-color-dark-secondary);
+    animation: carousel-preview-animation-in 0.25s;
+    transition: opacity 0.25s;
 }
 
 .carousel-preview-image {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  /*max-height: 80%; */
-  max-width: 100%;
-  top: 0px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    /*max-height: 80%; */
+    max-width: 100%;
+    top: 0px;
 }
 
 .carousel-preview-image img {
-  object-fit: cover;
-  width: 100%;
+    object-fit: cover;
+    width: 100%;
 }
 
 .close-top-right {
-  position: absolute;
-  top: 32px;
-  right: 48px;
-  cursor: pointer;
-  padding: 16px;
-  background-color: var(--main-color-base);
-  border-radius: 4px;
-  transition: 0.25s;
-  z-index: 1;
+    position: absolute;
+    top: 32px;
+    right: 48px;
+    cursor: pointer;
+    padding: 16px;
+    background-color: var(--main-color-base);
+    border-radius: 4px;
+    transition: 0.25s;
+    z-index: 1;
 }
 
 .close-top-right:hover {
-  background-color: var(--main-color-dark);
+    background-color: var(--main-color-dark);
 }
 
 @keyframes carousel-preview-animation-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes carousel-preview-animation-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 @media only screen and (max-width: 768px) {
-  .carousel-button {
-    width: 48px;
-    height: 120px;
-  }
+    .carousel-button {
+        width: 48px;
+        height: 120px;
+    }
 
-  .close-top-right {
-    top: 16px;
-    right: 24px;
-  }
+    .close-top-right {
+        top: 16px;
+        right: 24px;
+    }
 
-  .progress-bar-holder {
-    gap: 8px;
-  }
+    .progress-bar-holder {
+        gap: 8px;
+    }
 
-  .progress-bar {
-    width: 16px;
-  }
+    .progress-bar {
+        width: 16px;
+    }
 }
