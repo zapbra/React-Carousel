@@ -1,5 +1,8 @@
 {
-  "name": "react-carousel",
+  "name": "@zapbra/react-carousel",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/zapbra"
+  },
   "version": "1.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
